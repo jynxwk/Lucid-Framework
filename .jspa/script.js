@@ -1,14 +1,5 @@
-// Listen to popstate history events and get page depending on the path.
-addEventListener("popstate", async (event) => {
-    event.preventDefault();
-    const path = event.target.location.pathname;
-    loadPage(path)
-});
-
-function setAnchors() {
-    const anchors = document.querySelectorAll("a");
-
-    anchors.forEach(anchor => {
+addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("a").forEach(anchor => {
         let route = anchor.getAttribute("href");
         if (!route.includes("://")) {
             if(route.charAt(route.length) !== "/") route = route + "/";
@@ -17,13 +8,24 @@ function setAnchors() {
             anchor.setAttribute("href", route);
             anchor.addEventListener("click", (event) => {
                 event.preventDefault();
-                loadPage(route);
+                navigateTo(route);
+                history.pushState({}, "", route);
             })
         }
     })
-}
+})
 
-function loadPage(route) {
+// Listen to popstate history events and get page depending on the path.
+addEventListener("popstate", async (event) => {
+    event.preventDefault();
+    const path = event.target.location.pathname;
+    loadPage(path)
+});
+
+// Set Anchors to prevent normal redirects
+
+// Fetch file and update page function
+function navigateTo(route) {
     fetch("./.jspa/router.php", {
         method: "POST",
         headers: {
@@ -31,14 +33,13 @@ function loadPage(route) {
             },
         body: JSON.stringify({route})
     })
-    .then(async (response) => {
-        const data = await response.json();
-        document.querySelector("body").innerHTML = data;
-        history.pushState({}, "", route);
-        setAnchors()
+    .then(response => response.text())
+    .then(html => {
+        document.open()
+        document.write(html)
+        document.close()
     })
-}
-
-onload = () => {
-    setAnchors();
+    .catch(err => {
+        document.write(err)
+    })
 }
