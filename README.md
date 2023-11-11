@@ -15,3 +15,6 @@ JSPA is a small framework for creating simple single page applications using PHP
 
 ## Usage
 For now coding with JSPA is just like coding with HTML, CSS and JavaScript as usual with the only difference that it automatically prevents the page from reloading and replacing the page's content with the requested page content.
+
+### Disclaimer
+Keep in mind that this project is far from finished and still being worked on.
