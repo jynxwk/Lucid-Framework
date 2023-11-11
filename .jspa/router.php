@@ -14,6 +14,7 @@ function loadPage($request = "") {
 
     if (file_exists($page)) {
         $page = file_get_contents($page);
+        $page = $page . '<script>const root = "'. $root .'" </script>';
         $page = $page . '<script src="'. $root .'.jspa/script.js"></script>';
         return json_encode($page);
     }

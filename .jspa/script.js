@@ -11,14 +11,12 @@ function setAnchors() {
         let route = anchor.getAttribute("href");
         if (!route.includes("://")) {
             if(route.charAt(route.length) !== "/") route = route + "/";
-            if (route.charAt(0) === "/") route = route.slice(1)
-            route = "/" + route;
-            const root = window.location.pathname.split("/")[1];
-            route =  "/" + root + route;
+            if (route.charAt(0) === "/") route = route.slice(1);
+            route = root + route;
             anchor.setAttribute("href", route);
             anchor.addEventListener("click", (event) => {
                 event.preventDefault();
-                loadPage(route)
+                loadPage(route);
             })
         }
     })
