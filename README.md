@@ -11,7 +11,7 @@ JSPA is a small framework for creating simple single page applications using PHP
 - Install Xampp
 - Create a new Directory in your Xampp htdocs folder
 - Clone this git repository in to that folder
-- Done
+- Start Coding!
 
 ## Usage
 For now coding with JSPA is just like coding with HTML, CSS and JavaScript as usual with the only difference that it automatically prevents the page from reloading and replacing the page's content with the requested page content.
