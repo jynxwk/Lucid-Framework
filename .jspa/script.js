@@ -1,8 +1,9 @@
 // Listen to popstate history events and get page depending on the path.
-// addEventListener("popstate", async (event) => {
-//     event.preventDefault();
-//     const path = event.target.location.pathname;
-// });
+addEventListener("popstate", async (event) => {
+    event.preventDefault();
+    const path = event.target.location.pathname;
+    loadPage(path)
+});
 
 function setAnchors() {
     const anchors = document.querySelectorAll("a");
