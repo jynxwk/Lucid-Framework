@@ -1,7 +1,7 @@
 # JSPA
 
 ## What is JSPA?
-JSPA is a small framework for creating simple single page applications using PHP and JavaScript. The goal is to make it easy for everybody to understand while also making it an efficient framework for making your websites look more professional.
+JSPA is a small framework for creating simple single page applications using JavaScript. The goal is to make it easy for everybody to understand while also making it an efficient framework for making your websites look more professional.
 
 ## Requirements
 - Xampp

@@ -1,0 +1,37 @@
+<script>
+    function setAnchors() {
+        document.querySelectorAll("a").forEach(anchor => {
+            route = anchor.getAttribute("href");
+            if (!route.includes("://")) {
+                if (route.charAt(route.length - 1) != "/") route += "/";
+                anchor.setAttribute("href", route)
+                anchor.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    navigate(route)
+                })
+            }
+        });
+    }
+
+    function navigate(route) {
+        const headers = new Headers();
+        headers.append('pragma', 'no-cache');
+        headers.append('cache-control', 'no-cache');
+
+        fetch(route + "index.html", {headers})
+        .then(response => response.text())
+        .then(html => {
+            document.body.innerHTML = html;
+            history.pushState(null, null, route)
+            setAnchors()
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    onload = () => {
+        const route = window.location.pathname;
+        navigate(route)
+    }
+</script>
