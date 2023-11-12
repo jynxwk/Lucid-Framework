@@ -1,0 +1,91 @@
+<script>
+    // Check for history back button
+    addEventListener("popstate", async (event) => {
+        event.preventDefault();
+        const route = event.target.location.pathname
+        console.log("Went to", route)
+        navigate(route, false)
+    });
+
+    // Set anchors to prevent from reloading
+    function setAnchors() {
+        document.querySelectorAll("a").forEach(anchor => {
+            route = anchor.getAttribute("href");
+            if (!route.includes("://")) {
+                if (route.charAt(route.length - 1) != "/") route += "/";
+                anchor.setAttribute("href", route)
+                anchor.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    navigate(route)
+                })
+            }
+        });
+    }
+
+    // Handle navigation
+    function navigate(route, push = true) {
+        const headers = new Headers();
+        headers.append('pragma', 'no-cache');
+        headers.append('cache-control', 'no-cache');
+
+        fetch(route + "index.html", {headers})
+        .then(response => response.text())
+        .then(async html => {
+            buildHTML(html)
+            if (push) history.pushState(null, null, route)
+            setAnchors()
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    // Build the HTML of the page
+    async function buildHTML(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        const appScript = document.querySelector("script")
+        appScript.parentNode.removeChild(appScript)
+
+        const styleElements = doc.querySelectorAll("style")
+        let style;
+        if (styleElements.length > 0) {
+            let styleCode = combine(styleElements)
+            styleElements.forEach(style => style.parentNode.removeChild(style));
+            style = document.createElement("style");
+            style.innerHTML = styleCode
+            doc.head.appendChild(style)
+        }
+
+        document.head.innerHTML = doc.head.innerHTML;
+        document.head.appendChild(appScript)
+        document.body.innerHTML = doc.body.innerHTML;
+
+        const scriptElements = doc.querySelectorAll("script")
+        let script;
+        if (scriptElements.length > 0) {
+            let scriptCode = combine(scriptElements)
+            scriptElements.forEach(script => script.parentNode.removeChild(script));
+            script = document.createElement("script")
+            script.innerHTML = scriptCode
+            document.head.appendChild(script)
+        }
+
+        if (script) {
+            document.head.appendChild(script)
+        }
+    }
+
+    // Combine all HTML inside the given elements into one
+    function combine(elements) {
+        return Array.from(elements).map(element => element.innerHTML).join('\n');
+    }
+
+    // Load script when page is first being loaded
+    onload = () => {
+        console.log("Script loaded.")
+        const route = window.location.pathname;
+        navigate(route)
+    }
+</script>
