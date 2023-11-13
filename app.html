@@ -1,4 +1,4 @@
-<!-- Lucid v1.1 -->
+<!-- Lucid v1.2 -->
 <script>
     // Check for history back button
     addEventListener("popstate", async (event) => {
@@ -94,7 +94,6 @@
 
     // Load script when page is first being loaded
     onload = () => {
-        console.log("Script loaded.")
         const route = window.location.pathname;
         navigate(route)
     }
