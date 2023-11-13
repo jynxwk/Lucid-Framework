@@ -1,9 +1,9 @@
+<!-- Lucid v1.1 -->
 <script>
     // Check for history back button
     addEventListener("popstate", async (event) => {
         event.preventDefault();
         const route = event.target.location.pathname
-        console.log("Went to", route)
         navigate(route, false)
     });
 
@@ -23,7 +23,7 @@
     }
 
     // Handle navigation
-    function navigate(route, push = true) {
+    function navigate(route, updateHistory = true) {
         const headers = new Headers();
         headers.append('pragma', 'no-cache');
         headers.append('cache-control', 'no-cache');
@@ -31,8 +31,9 @@
         fetch(route + "index.html", {headers})
         .then(response => response.text())
         .then(async html => {
-            buildHTML(html)
-            if (push) history.pushState(null, null, route)
+            html = await buildHTML(html)
+            await updateHTML(html)
+            if (updateHistory) history.pushState(null, null, route)
             setAnchors()
         })
         .catch(error => {
@@ -44,9 +45,6 @@
     async function buildHTML(html) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
-        
-        const appScript = document.querySelector("script")
-        appScript.parentNode.removeChild(appScript)
 
         const styleElements = doc.querySelectorAll("style")
         let style;
@@ -58,10 +56,6 @@
             doc.head.appendChild(style)
         }
 
-        document.head.innerHTML = doc.head.innerHTML;
-        document.head.appendChild(appScript)
-        document.body.innerHTML = doc.body.innerHTML;
-
         const scriptElements = doc.querySelectorAll("script")
         let script;
         if (scriptElements.length > 0) {
@@ -69,8 +63,28 @@
             scriptElements.forEach(script => script.parentNode.removeChild(script));
             script = document.createElement("script")
             script.innerHTML = scriptCode
-            document.head.appendChild(script)
         }
+
+        return {doc, script};
+    }
+
+    async function updateHTML({doc, script}) {
+        const app = await loadApp()
+        document.head.innerHTML = doc.head.innerHTML;
+        document.head.appendChild(app)
+        if (script) document.head.appendChild(script)
+        document.body.innerHTML = doc.body.innerHTML;
+    }
+
+    async function loadApp() {
+        return fetch("app.html")
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const script = doc.querySelector("script")
+            return script;
+        })
     }
 
     // Combine all HTML inside the given elements into one
