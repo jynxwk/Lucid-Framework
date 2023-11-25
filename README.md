@@ -1,4 +1,4 @@
-# JSPA
+# Lucid
 A JavaScript "Framework" for easily turning HTML, CSS, and JavaScript web applications into single-page apps.
 
 ## Table Of Contents
@@ -21,11 +21,11 @@ A JavaScript "Framework" for easily turning HTML, CSS, and JavaScript web applic
 - Start Coding!
 
 ## Features
-- Simplicity: JSPA is very easy to use since it's just coding HTML as usual.
+- Simplicity: Lucid is very easy to use since it's just coding HTML as usual.
 - Single-page App Routing
 
 ## Planned
-My initial plan was to create a small code snippet that turns your web app into a single-page application without having to learn a whole framework but it's going pretty well so I might make more out of it while keeping this version as it is. Here are the planned functions for a maybe far future version of JSPA (which probably won't be named "JSPA" anymore at that point):
+My initial plan was to create a small code snippet that turns your web app into a single-page application without having to learn a whole framework but it's going pretty well so I might make more out of it while keeping this version as it is. Here are the planned functions for a maybe far future version of Lucid (which probably won't be named "Lucid" anymore at that point):
 - Automatic CSS and JavaScript file includes (by having the in the same folder and given them a specific name)
 - Server-sided functionality, such as database usage
 - Simpler API-Calls
@@ -34,7 +34,7 @@ My initial plan was to create a small code snippet that turns your web app into 
 - Might switch from plain JavaScript to NodeJS
 
 ## Usage
-Coding with JSPA is just like coding with HTML, CSS and JavaScript as usual with the only difference that it automatically prevents the page from reloading and replacing the page's content with the requested page content and partially compresses it.
+Coding with Lucid is just like coding with HTML, CSS and JavaScript as usual with the only difference that it automatically prevents the page from reloading and replacing the page's content with the requested page content and partially compresses it.
 
 ### Routing
 Place an index.html file in the desired /route directory. That file will be loaded when the /route is called.
